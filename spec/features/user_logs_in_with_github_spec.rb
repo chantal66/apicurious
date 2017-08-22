@@ -12,10 +12,11 @@ RSpec.feature 'user' do
 
       assert_equal 200, page.status_code
 
-      click_link 'Sign in with Github'
+      click_link 'Sign in with GitHub'
 
-      expect(page).to have_link('Sing in with Github')
-      expect(page).to have_content('chantal66')
+      assert_equal "/", current_path
+
+      expect(page).to have_content('Chantal Justamond')
       expect(page).to have_link('Logout')
     end
   end
