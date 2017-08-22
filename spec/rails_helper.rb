@@ -1,20 +1,36 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'capybara/rails'
+require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
-require 'spec_helper'
 require 'webmock/rspec'
+require 'capybara/rails'
 require 'vcr'
 
 VCR.configure do |config|
-  config.cassete_library_dir = 'spec/cassettes'
+  config.cassette_library_dir = 'spec/cassettes'
   config.hook_into :webmock
+  config.filter_sensitive_data('<ACCESS_TOKEN>') {ENV['my_token']}
 end
 # Add additional requires below this line. Rails is not loaded until this point!
-
+def stub_omnioauth
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:github] = OmniAuth::AutoHash.new({
+    provider: 'github',
+    uid: '12345',
+    info: {
+        username: 'chantal66',
+        email: 'chantal66@email.com',
+        name: 'Chantal Justamond',
+        image: 'image_path',
+    },
+    credentials: {
+        token: ENV['my_token']
+    }
+  })
+end
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
