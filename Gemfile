@@ -54,6 +54,8 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-callback-matchers', '~> 1.1.1'
   gem 'selenium-webdriver'
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do
