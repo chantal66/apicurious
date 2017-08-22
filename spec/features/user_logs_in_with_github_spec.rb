@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 RSpec.feature 'user' do
   before(:each) do
     Capybara.app = Apicurious::Application
@@ -7,7 +8,7 @@ RSpec.feature 'user' do
   end
   it 'logs in using github' do
     VCR.use_cassette('user_logs_in_with_github') do
-      visit root_path
+      visit '/'
 
       assert_equal 200, page.status_code
 

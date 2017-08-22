@@ -33,6 +33,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'omniauth'
 gem 'omniauth-github'
 gem 'figaro'
 gem 'faraday'

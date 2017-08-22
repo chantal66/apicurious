@@ -6,18 +6,13 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'webmock/rspec'
-require 'capybara/rails'
+# require 'capybara/rails'
 require 'vcr'
+require 'omniauth'
 
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/cassettes'
-  config.hook_into :webmock
-  config.filter_sensitive_data('<ACCESS_TOKEN>') {ENV['my_token']}
-end
-# Add additional requires below this line. Rails is not loaded until this point!
-def stub_omnioauth
+def stub_omniauth
   OmniAuth.config.test_mode = true
-  OmniAuth.config.mock_auth[:github] = OmniAuth::AutoHash.new({
+  OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
     provider: 'github',
     uid: '12345',
     info: {
@@ -31,6 +26,13 @@ def stub_omnioauth
     }
   })
 end
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'spec/cassettes'
+  config.hook_into :webmock
+  config.filter_sensitive_data('<ACCESS_TOKEN>') {ENV['my_token']}
+end
+# Add additional requires below this line. Rails is not loaded until this point!
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -84,4 +86,5 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+  config.filter_gems_from_backtrace("factory_girl-4.8.0", "capybara-2.14.0", "rack-test-0.6.3", "railties-5.0.3", "rack-2.0.3", "activesupport-5.0.3", "webmock-3.0.1", "faraday-0.12.1", "vcr-3.0.3", "railties-5.1.2", "omniauth-1.6.1", "capybara-2.14.4")
 end
